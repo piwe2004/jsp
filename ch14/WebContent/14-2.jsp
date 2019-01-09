@@ -41,6 +41,8 @@
 	//6단계 - 데이터베이스 종료
 	conn.close();
 	// 리다이렉트
-
+	
+	response.sendRedirect("./14-3.jsp");
+	
 	%>
 	<h2>완료</h2>
