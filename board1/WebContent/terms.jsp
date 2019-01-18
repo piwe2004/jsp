@@ -1,37 +1,14 @@
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.Connection"%>
+<%@page import="kr.co.board1.vo.TermsVO"%>
+<%@page import="kr.co.board1.service.MemberService"%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-
 	request.setCharacterEncoding("UTF-8");
+
+	MemberService service =  MemberService.getInstance();
+	TermsVO vo = service.terms();
 	
-	final String HOST = "jdbc:mysql://192.168.0.126:3306/kmg";
-	final String USER = "kmg";
-	final String PASS = "1234";
-	
-	//1단계
-	Class.forName("com.mysql.jdbc.Driver");
-	//2단계
-	Connection conn = DriverManager.getConnection(HOST,USER,PASS);
-	//3단계
-	Statement stmt = conn.createStatement();
-	//4단계
-	String sql = "SELECT * FROM `JSP_TERMS` ";
-	ResultSet rs =  stmt.executeQuery(sql);
-	
-	String terms = null;
-	String privacy = null;
-	//5단계
-	if(rs.next()){
-		terms 	= rs.getString(1);
-		privacy 	= rs.getString(2);
-	}
-	//6단계
-	rs.close();
-	stmt.close();
-	conn.close();
+/* 	String terms = null;
+	String privacy = null; */
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -81,7 +58,7 @@
 					<tr>
 						<td>
 							<textarea readonly>
-								<%=terms %>
+								<%=vo.getTerms() %>
 							</textarea>
 							<div>
 								<label><input type="checkbox" name="chk1" />&nbsp;동의합니다.</label>        
@@ -96,7 +73,7 @@
 					<tr>
 						<td>
 							<textarea readonly>
-								<%=privacy %>
+								<%=vo.getPrivacy() %>
 							</textarea>
 							<div>
 								<label><input type="checkbox" name="chk2" />&nbsp;동의합니다.</label>        
