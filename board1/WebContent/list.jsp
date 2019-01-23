@@ -1,3 +1,5 @@
+<%@page import="java.sql.Statement"%>
+<%@page import="kr.co.board1.service.BoardService"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="kr.co.board1.vo.BoardVO"%>
@@ -14,32 +16,50 @@
 	 if(member == null){
 		pageContext.forward("./login.jsp");
 	} 
-	 
-	 Connection conn = DBconfig.getConnection();
-	 PreparedStatement psmt = conn.prepareStatement(SQL.SELECT_LIST);
-	 
-	 ResultSet rs = psmt.executeQuery();
-	 
-	 ArrayList<BoardVO> list = new ArrayList<>();
-	 
-	 while(rs.next()){
-		 BoardVO bs = new BoardVO();
 
-		 bs.setSeq(rs.getInt(1));
-		 bs.setParent(rs.getInt(2));
-		 bs.setComment(rs.getInt(3));
-		 bs.setCate(rs.getString(4));
-		 bs.setTitle(rs.getString(5));
-		 bs.setContent(rs.getString(6));
-		 bs.setFile(rs.getInt(7));
-		 bs.setHit(rs.getInt(8));
-		 bs.setUid(rs.getString(9));
-		 bs.setRegip(rs.getString(10));
-		 bs.setRdate(rs.getString(11));
-		 bs.setNick(rs.getString(12));
+	 request.setCharacterEncoding("UTF-8");
+	 String pg = request.getParameter("pg");
+	 
+	BoardService service = BoardService.getInstance();
+	 
+	 int start = 0;
+	 
+	// LIMIT용 start 값 계산
+		 if( pg == null){
+			 start = 1;
+		 }else{
+			 start = Integer.parseInt(pg);
+		 }
+	 
+	 int limit = (start - 1) * 10;
+	
 
-		 list.add(bs);
-	 }
+	ArrayList<BoardVO> list = service.list(limit);
+	
+	//페이지 번호계산
+		int total = service.getTotal();
+		int begin = 1;
+		int pageEnd = 0;
+		
+		if( total % 10 == 0){
+			pageEnd = total / 10;
+		}else{
+			pageEnd = total /10 + 1 ;
+		}
+	
+	// 글카운터 번호
+	int count = total - limit;
+	
+	// 페이지그룹 계산
+	int currentPage = start;
+	int currentPageGroup = (int)Math.ceil(currentPage / 10.0);
+	int groupStart = (currentPageGroup - 1) * 10 + 1;
+	int groupEnd = currentPageGroup * 10;
+	
+	if(groupEnd > pageEnd){
+		groupEnd = pageEnd;
+	}
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -67,7 +87,7 @@
 					for(BoardVO bs : list){
 				%>
 					<tr>
-						<td><%=bs.getSeq() %></td>
+						<td><%= count-- %></td>
 						<td><a href="./view.jsp?seq=<%=bs.getSeq() %>"><%=bs.getTitle() %></a><%= "&nbsp[" + bs.getComment() + "]" %></td>
 						<td><%=bs.getNick() %></td>
 						<td><%=bs.getRdate().substring(2,10) %></td>
@@ -79,9 +99,17 @@
 			<!-- 페이징 -->
 			<nav class="paging">
 				<span> 
-				<a href="#" class="prev">이전</a>
-				<a href="#" class="num">1</a>
-				<a href="#" class="next">다음</a>
+				<%if (groupStart > 1){ %>
+				<a href="./list.jsp?pg=<%= groupStart-1 %>" class="prev">이전</a>
+				<%} %>
+				
+				<%for(int current=groupStart; current <= groupEnd; current++){ %>
+				<a href="./list.jsp?pg=<%= current %>" class="num"><%= current %></a>
+				<%} %>
+				
+				<%if(groupEnd < pageEnd){ %>
+				<a href="./list.jsp?pg=<%= groupEnd+1 %>" class="next">다음</a>
+				<%} %>
 				</span>
 			</nav>
 			<a href="./write.jsp" class="btnWrite">글쓰기</a>

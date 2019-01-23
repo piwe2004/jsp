@@ -3,11 +3,15 @@ package kr.co.board1.service;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.PageContext;
+
+import com.mysql.jdbc.CallableStatement;
 
 import kr.co.board1.config.DBconfig;
 import kr.co.board1.config.SQL;
@@ -22,18 +26,38 @@ public class BoardService {
 	}
 	private BoardService() {}
 	
+	public MemberVO getMember(HttpSession session) {
+		MemberVO vo = (MemberVO) session.getAttribute("member");
+		return vo;
+	}
+	
 	public void InsertBoard() throws Exception{}
 	
-	public void list(HttpSession session, PageContext pagecontext) throws Exception{
-		MemberVO member = (MemberVO)session.getAttribute("member");
-
-		 if(member == null){
-			 
-			pagecontext.forward("./login.jsp");
-		} 
+	public int getTotal() throws Exception{
+		
+		int total = 0;
+		
+		Connection conn = DBconfig.getConnection();
+		Statement stmt = conn.createStatement();
+	
+		
+		ResultSet rs = stmt.executeQuery(SQL.SELECT_COUNT);
+		if(rs.next()) {
+			total  = rs.getInt(1);
+		}
+		
+		rs.close();
+		stmt.close();
+		conn.close();
+		
+		return total;
+	}
+	
+	public ArrayList<BoardVO> list(int start) throws Exception{
 		 
 		 Connection conn = DBconfig.getConnection();
 		 PreparedStatement psmt = conn.prepareStatement(SQL.SELECT_LIST);
+		 psmt.setInt(1, start);
 		 
 		 ResultSet rs = psmt.executeQuery();
 		 
@@ -57,6 +81,13 @@ public class BoardService {
 
 			 list.add(bs);
 		 }
+		 
+		 rs.close();
+		psmt.close();
+		conn.close();
+		
+		 return list;
+		 
 	}
 	
 	public void updatehit(int seq) throws Exception{
@@ -128,20 +159,83 @@ public class BoardService {
 		return seq;
 		
 	}
-	public void delete(HttpServletRequest request) throws Exception{
+	public String delete(HttpServletRequest request) throws Exception {
 		request.setCharacterEncoding("UTF-8");
-		String seq = request.getParameter("seq");
+		String seq 	  = request.getParameter("seq");
+		String parent = request.getParameter("parent");
 		
 		Connection conn = DBconfig.getConnection();
 		
 		PreparedStatement psmt = conn.prepareStatement(SQL.DELETE_BOARD);
-		psmt.setString(1,seq);
+		psmt.setString(1, seq);
 		
 		psmt.executeUpdate();
-		
 		psmt.close();
+		
+		return parent;
 	}
-	public void insertComment() throws Exception{}
-	public void listComment() throws Exception{}
+	public String insertComment(HttpServletRequest request ) throws Exception{
+	
+		request.setCharacterEncoding("UTF-8");
+		
+		String parent = request.getParameter("parent");
+		String content = request.getParameter("comment");
+		String uid = request.getParameter("uid");
+		String regip = request.getRemoteAddr();
+		
+		Connection conn = DBconfig.getConnection();
+		
+		java.sql.CallableStatement call = conn.prepareCall(SQL.INSERT_COMMENT);
+		
+		call.setString(1, parent);
+		call.setString(2, content);
+		call.setString(3, uid);
+		call.setString(4, regip);
+		
+		call.executeUpdate();
+		
+		call.close();
+		conn.close();
+		
+		
+		return parent;
+	}
+	
+	public ArrayList<BoardVO> listComment(String parent) throws Exception{
+			
+		 Connection conn = DBconfig.getConnection();
+		 PreparedStatement psmt = conn.prepareStatement(SQL.SELECT_COMMENT);
+		 psmt.setString(1,  parent);
+		 
+		 ResultSet rs = psmt.executeQuery();
+		 
+		 ArrayList<BoardVO> list = new ArrayList<>();
+		 
+		 while(rs.next()){
+			 BoardVO bs = new BoardVO();
+
+			 bs.setSeq(rs.getInt("seq"));
+			 bs.setParent(rs.getInt(2));
+			 bs.setComment(rs.getInt(3));
+			 bs.setContent(rs.getString(6));
+			 bs.setFile(rs.getInt(7));
+			 bs.setHit(rs.getInt(8));
+			 bs.setUid(rs.getString(9));
+			 bs.setRegip(rs.getString(10));
+			 bs.setRdate(rs.getString("rdate"));
+			 bs.setNick(rs.getString(12));
+
+			 list.add(bs);
+		 }
+		 rs.close();
+		psmt.close();
+		conn.close();
+		 return list;
+		 
+		 
+	}
+	public void updateCommentCount() throws Exception{
+		
+	}
 		
 }
