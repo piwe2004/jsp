@@ -31,7 +31,54 @@ public class BoardService {
 		return vo;
 	}
 	
-	public void InsertBoard() throws Exception{}
+	public int write(int file, String... args) throws Exception{
+		
+		Connection conn = DBconfig.getConnection();
+		
+		 //트랜젝션 시작
+		conn.setAutoCommit(false);
+		
+		PreparedStatement psmt = conn.prepareStatement(SQL.INSERT_BOARD);
+		psmt.setString(1, args[0]);
+		psmt.setString(2, args[1]);
+		psmt.setString(3, args[2]);
+		psmt.setInt(4, file);
+		psmt.setString(5, args[3]);
+		
+		Statement stmt = conn.createStatement();
+		
+		psmt.executeUpdate();
+		ResultSet rs = stmt.executeQuery(SQL.SELECT_MAX_SEQ);
+		 
+		//트랜젝션 적용
+		conn.commit();
+		
+		int seq = 0;
+		if(rs.next()) {
+			seq = rs.getInt(1);
+		}
+		
+		rs.close();
+		stmt.close();
+		psmt.close();
+		conn.close();
+		
+		return seq;
+	}
+	public void fileInsert(int parent, String oldName, String newName) throws Exception{
+		
+		Connection conn = DBconfig.getConnection();
+		
+		PreparedStatement psmt = conn.prepareStatement(SQL.INSERT_FILE);
+		psmt.setInt(1, parent);
+		psmt.setString(2, oldName);
+		psmt.setString(3, newName);
+		
+		psmt.executeUpdate();
+		
+		psmt.close();
+		conn.close();	
+	}
 	
 	public int getTotal() throws Exception{
 		
@@ -104,8 +151,6 @@ public class BoardService {
 		
 		return groupStartEnd;
 	}
-	
-	
 	public ArrayList<BoardVO> list(int start) throws Exception{
 		 
 		 Connection conn = DBconfig.getConnection();
@@ -142,7 +187,6 @@ public class BoardService {
 		 return list;
 		 
 	}
-	
 	public void updatehit(int seq) throws Exception{
 	
 		Connection conn = DBconfig.getConnection();
@@ -160,7 +204,11 @@ public class BoardService {
 		
 		Connection conn = DBconfig.getConnection();
 		// 3단계
-		PreparedStatement psmt = conn.prepareStatement(SQL.SELECT_VIEW);
+		
+		PreparedStatement psmt = null;
+		
+		psmt = conn.prepareStatement(SQL.SELECT_VIEW_WITH_FILE);
+		
 		psmt.setString(1,seq);
 		
 		
@@ -169,6 +217,7 @@ public class BoardService {
 		
 		// 5단계
 		BoardVO bs = new BoardVO();
+		String oldName = null;
 		
 		if(rs.next()){
 		
@@ -183,6 +232,10 @@ public class BoardService {
 			 bs.setUid(rs.getString(9));
 			 bs.setRegip(rs.getString(10));
 			 bs.setRdate(rs.getString(11));
+			 bs.setOldName(rs.getString(14));
+			 bs.setNewName(rs.getString(15));
+			 bs.setDownload(rs.getInt(16));
+			 
 
 		}
 		// 6단계
@@ -253,7 +306,6 @@ public class BoardService {
 		
 		return parent;
 	}
-	
 	public ArrayList<BoardVO> listComment(String parent) throws Exception{
 			
 		 Connection conn = DBconfig.getConnection();

@@ -64,7 +64,11 @@
 				%>
 					<tr>
 						<td><%= count-- %></td>
-						<td><a href="./view.jsp?seq=<%=bs.getSeq() %>"><%=bs.getTitle() %></a><%= "&nbsp[" + bs.getComment() + "]" %></td>
+						<td><a href="./view.jsp?seq=<%=bs.getSeq() %>"><%=bs.getTitle() %></a><%= "&nbsp[" + bs.getComment() + "]" %>
+							<% if(bs.getFile() == 1){ %>
+							<img src="./img/file_ico.jpg">
+							<%} %>
+						</td>
 						<td><%=bs.getNick() %></td>
 						<td><%=bs.getRdate().substring(2,10) %></td>
 						<td><%=bs.getHit() %></td>

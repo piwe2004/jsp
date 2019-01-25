@@ -12,8 +12,15 @@ public class SQL {
 																					  + "title=?,"
 																					  + "content=?,"
 																					  + "uid=?,"
+																					  + "file=?,"
 																					  + "regip=?,"
 																					  + "rdate=NOW()";
+	
+	public static final String INSERT_FILE="INSERT INTO `JSP_FILE` (parent, oldName, newName, rdate) VALUES (?,?,?,NOW())";
+	public static final String DOWNLOAD_COUNT="UPDATE `JSP_FILE` SET download=download+1 WHERE parent=?";
+			
+	public static final String SELECT_MAX_SEQ="SELECT MAX(seq) FROM `JSP_BOARD`";
+	public static final String SELECT_VIEW_WITH_FILE = "SELECT * FROM `JSP_BOARD` AS b LEFT JOIN `JSP_FILE` AS f ON b.seq = f.parent WHERE b.seq=?";
 
 	public static final String SELECT_COUNT="SELECT COUNT(*) FROM `JSP_BOARD` WHERE parent=0";
 	

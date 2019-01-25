@@ -75,8 +75,10 @@ service.updatehit(bs.getSeq());
 						<tr>
 							<td>첨부파일</td>
 							<td>
-								<a href="#">테스트.hwp</a>
-								<span>3회 다운로드</span>
+								<a href="./proc/filedown.jsp?seq=<%=bs.getSeq() %>&newName=<%=bs.getNewName() %>&oldName=<%=bs.getOldName() %>">
+									<%= bs.getOldName() %>
+								</a>
+								<span><%=bs.getDownload() %>회 다운로드</span> 
 							</td>
 						</tr>
 						<%} %>
