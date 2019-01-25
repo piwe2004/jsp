@@ -86,7 +86,7 @@ $(function(){
 								isHpOk = false;
 								//tag.focus();
 							}else{
-								$(".resultEmail").css("color","blue").text("사용가능한 번호입니다.");
+								$(".resultHp").css("color","blue").text("사용가능한 번호입니다.");
 								isHpOk = true;
 							}
 						}
