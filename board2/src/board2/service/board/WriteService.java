@@ -8,7 +8,7 @@ import board2.controller.CommonAction;
 public class WriteService implements CommonAction{
 	
 	@Override
-	public String requestProc(HttpServletRequest req, HttpServletResponse resp) {
+	public String requestProc(HttpServletRequest req, HttpServletResponse resp) throws Exception  {
 		
 		return "/write.jsp";
 		
