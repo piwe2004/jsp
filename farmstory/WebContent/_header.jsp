@@ -41,10 +41,11 @@
         <nav>
           <ul class="gnb">
             <li><a href="/farmstory/intro/hello.do"><img src="/farmstory/img/head_menu1.png" onmouseover="this.src='/farmstory/img/head_menu1_ov.png';" onmouseout="this.src='/farmstory/img/head_menu1.png';" alt="설명" title="팜스토리소개메뉴" /></a></li>
-            <li><a href="/farmstory/market/market.do""><img src="/farmstory/img/head_menu2.png" onmouseover="this.src='/farmstory/img/head_menu2_ov.png';" onmouseout="this.src='/farmstory/img/head_menu2.png';" alt="설명" title="장보기메뉴" /></a></li>
-            <li><a href="/farmstory/croptalk/story.do""><img src="/farmstory/img/head_menu3.png" onmouseover="this.src='/farmstory/img/head_menu3_ov.png';" onmouseout="this.src='/farmstory/img/head_menu3.png';" alt="설명" title="농작물이야기메뉴" /></a></li>
-            <li><a href="/farmstory/event/event.do""><img src="/farmstory/img/head_menu4.png" onmouseover="this.src='/farmstory/img/head_menu4_ov.png';" onmouseout="this.src='/farmstory/img/head_menu4.png';" alt="설명" title="이벤트메뉴" /></a></li>
-            <li><a href="/farmstory/community/notice.do""><img src="/farmstory/img/head_menu5.png" onmouseover="this.src='/farmstory/img/head_menu5_ov.png';" onmouseout="this.src='/farmstory/img/head_menu5.png';" alt="설명" title="커뮤니티메뉴" /></a></li>
+            <li><a href="/farmstory/board/list.do?gr=market&cate=market"><img src="/farmstory/img/head_menu2.png" onmouseover="this.src='/farmstory/img/head_menu2_ov.png';" onmouseout="this.src='/farmstory/img/head_menu2.png';" alt="설명" title="장보기메뉴" /></a></li>
+            <!-- <li><a href="/farmstory/board/story.do"><img src="/farmstory/img/head_menu3.png" onmouseover="this.src='/farmstory/img/head_menu3_ov.png';" onmouseout="this.src='/farmstory/img/head_menu3.png';" alt="설명" title="농작물이야기메뉴" /></a></li> -->
+            <li><a href="/farmstory/board/list.do?gr=croptalk&cate=story"><img src="/farmstory/img/head_menu3.png" onmouseover="this.src='/farmstory/img/head_menu3_ov.png';" onmouseout="this.src='/farmstory/img/head_menu3.png';" alt="설명" title="농작물이야기메뉴" /></a></li>
+            <li><a href="/farmstory/board/list.do?gr=event&cate=event""><img src="/farmstory/img/head_menu4.png" onmouseover="this.src='/farmstory/img/head_menu4_ov.png';" onmouseout="this.src='/farmstory/img/head_menu4.png';" alt="설명" title="이벤트메뉴" /></a></li>
+            <li><a href="/farmstory/board/list.do?gr=community&cate=notice"><img src="/farmstory/img/head_menu5.png" onmouseover="this.src='/farmstory/img/head_menu5_ov.png';" onmouseout="this.src='/farmstory/img/head_menu5.png';" alt="설명" title="커뮤니티메뉴" /></a></li>
           </ul>
         </nav>
       </header>

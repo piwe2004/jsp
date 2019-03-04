@@ -1,17 +1,17 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@include file="../_header.jsp" %>
+<%@ taglib prefix="c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <section id="sub">
   <div><img src="../img/sub_top_tit2.png"></div>
   <div>
     <aside>
       <img src="../img/sub_aside_cate2_tit.png" alt="">
       <ul class="side_menu">
-        <li><a href="#"><img src="../img/sub_cate2_lnb1_ov.png" alt=""></a></li>
+        <li class=" ${cate == 'market'?'on':''}"><a href="/farmstory/board/list.do?event&cate=event"><img src="../img/sub_cate2_lnb1${cate == 'market'?'_ov':''}.png" alt=""></a></li>
       </ul>
     </aside>
     <article>
       <div class="sub_tit_area">
-        <img src="../img/sub_nav_tit_cate2_tit1.png" alt="장보기">
+        <img src="../img/sub_nav_tit_cate2_${cate}.png" alt="이벤트">
         <div class="sub_tit_nav">
           <img src="../img/sub_page_nav_ico.gif" alt="">
           <p>
@@ -19,7 +19,4 @@
           </p>
         </div>
       </div>
-    </article>
-  </div>
-</section>
-<%@include file="../_footer.jsp" %>
+      <!-- 내용 시작 -->

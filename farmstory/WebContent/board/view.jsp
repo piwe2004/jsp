@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="../_header.jsp" %>
+<jsp:include page="./_aside_${gr}.jsp" />
 		<div id="board">
 			<h3>글보기</h3>
 			<div class="view">
@@ -29,7 +30,7 @@
 					<div class="btns">
 						<a href="#" class="cancel del">삭제</a>
 						<a href="#" class="cancel mod">수정</a>
-						<a href="#" class="cancel">목록</a>
+						<a href="javascript:history.back();" class="cancel">목록</a>
 					</div>
 				</form>
 			</div><!-- view 끝 -->
@@ -37,11 +38,10 @@
 			<!-- 댓글리스트 -->
 			<section class="comments">
 				<h3>댓글목록</h3>
-				
 				<div class="comment">
 					<span>
-						<span>홍길동</span>
-						<span>18-03-01</span>
+						<span class="nick">홍길동</span>
+						<span class="date">18-03-01</span>
 					</span>
 					<textarea>테스트 댓글입니다.</textarea>
 					<div>
@@ -79,6 +79,10 @@
 				$(function(){
 					
 					var btnComment = $('.comment_write .submit');
+					var comments = $('.comments');
+					var comment  = $('.comments > .comment');
+					var empty = $(".comments > .empty");
+					var parent = $("#seq").val();
 					
 					btnComment.click(function(){
 						
@@ -90,22 +94,34 @@
 						var json = {"parent":parent, "uid":uid, "nick":nick, "content":content};
 						
 						$.ajax({
-							url: '/board2/comment.do',
+							url: '/farmstory/board/comment.do',
 							type: 'POST',
 							dataType: 'json',
 							data: json,
 							success: function(result){
 								
-								var comments = $('.comments');
-								var comment  = $('.comments > .comment');
-								
-								var commentCloned = comment.clone();
-								commentCloned.find('span > .nick').text(result.nick);
-								commentCloned.find('span > .date').text(result.date);
-								commentCloned.find('textarea').text(result.content);
-								comments.append(commentCloned);
+								if(result.length == 0){
+									comment.remove();
+								}else{
+									empty.remove();
+								}
+								for(var i in result){
+									if( i > 0){
+										var commentCloned = comment.clone();
+										commentCloned.find("span > .nick").text(result[i].nick);
+										commentCloned.find("span > .date").text(result[i].rdate.substring(2,10));
+										commentCloned.find("textarea").text(result[i].content);
+										comments.append(commentCloned);
+									}else{
+										comment.find("span > .nick").text(result[i].nick);
+										comment.find("span > .date").text(result[i].rdate.substring(2,10));
+										comment.find("textarea").text(result[i].content);
+									}
+								}
 							}
 						});
+						
+						content.val('');
 						
 						return false;
 						
@@ -119,4 +135,8 @@
 			</script>
 			
 		</div><!-- board 끝 -->
+      <!-- 내용 끝 -->
+    </article>
+  </div>
+</section>
 <%@include file="../_footer.jsp" %>

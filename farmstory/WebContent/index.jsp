@@ -1,5 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="./_header.jsp" %>
+<script>
+	var la_title = document.getElementsByClassName("la_title").innerHTML
+	console.log(la_title);
+	var la_title_val  = la_title.substring(1, 10);
+</script>
 <main>
   <div class="slider">
     <ul>
@@ -28,11 +34,15 @@
       <div>
         <img src="./img/main_latest1_img.jpg" alt="">
         <ul>
-          <li><span class="late_arrow"><img src="./img/main_latest_icon.gif"></span><a href="#">쑥쑥 자라는 고추</a><span class="late_date">03-28</span></li>
-          <li><span class="late_arrow"><img src="./img/main_latest_icon.gif"></span><a href="#">여성에게 정말 좋은 가지</a><span class="late_date">03-28</span></li>
-          <li><span class="late_arrow"><img src="./img/main_latest_icon.gif"></span><a href="#">알이 굵은 감자를 키워보자</a><span class="late_date">03-28</span></li>
-          <li><span class="late_arrow"><img src="./img/main_latest_icon.gif"></span><a href="#">농약 걱정 없이 먹는 쌈채소</a><span class="late_date">03-28</span></li>
-          <li><span class="late_arrow"><img src="./img/main_latest_icon.gif"></span><a href="#">토마토! 건강하게 길러서 안심…</a><span class="late_date">03-28</span></li>
+          <c:forEach var="vo"  items="${latest1}">
+	          <li>
+		          	<span class="late_arrow">
+		          		<img src="./img/main_latest_icon.gif" >
+		          		<a class="la_title" href="#">${vo.title }</a>
+		          		<span class="late_date">${vo.rdate }</span>
+		          	</span>
+	          	</li>
+          </c:forEach>
         </ul>
       </div>
     </div>
@@ -41,11 +51,15 @@
       <div>
         <img src="./img/main_latest2_img.jpg" alt="">
         <ul>
-          <li><span class="late_arrow"><img src="./img/main_latest_icon.gif"></span><a href="#">다섯번째 이야기: 첫번…</a><span class="late_date">03-28</span></li>
-          <li><span class="late_arrow"><img src="./img/main_latest_icon.gif"></span><a href="#">네번째 이야기: 내 자…</a><span class="late_date">03-28</span></li>
-          <li><span class="late_arrow"><img src="./img/main_latest_icon.gif"></span><a href="#">세번째 이야기: 건강한…</a><span class="late_date">03-28</span></li>
-          <li><span class="late_arrow"><img src="./img/main_latest_icon.gif"></span><a href="#">두번째 이야기: 귀농에…</a><span class="late_date">03-28</span></li>
-          <li><span class="late_arrow"><img src="./img/main_latest_icon.gif"></span><a href="#">첫번째 이야기: 귀농예…</a><span class="late_date">03-28</span></li>
+          <c:forEach var="vo"  items="${latest2}">
+	          <li>
+		          	<span class="late_arrow">
+		          		<img src="./img/main_latest_icon.gif" >
+		          		<a class="la_title" href="#">${vo.title }</a>
+		          		<span class="late_date">${vo.rdate }</span>
+		          	</span>
+	          	</li>
+          </c:forEach>
         </ul>
       </div>
     </div>
@@ -54,11 +68,15 @@
       <div>
         <img src="./img/main_latest3_img.jpg" alt="">
         <ul>
-          <li><span class="late_arrow"><img src="./img/main_latest_icon.gif"></span><a href="#">딸기체험장을 오픈…</a><span class="late_date">03-28</span></li>
-          <li><span class="late_arrow"><img src="./img/main_latest_icon.gif"></span><a href="#">올해는 딸기 풍년…</a><span class="late_date">03-28</span></li>
-          <li><span class="late_arrow"><img src="./img/main_latest_icon.gif"></span><a href="#">조금 못났지만 높…</a><span class="late_date">03-28</span></li>
-          <li><span class="late_arrow"><img src="./img/main_latest_icon.gif"></span><a href="#">농약 걱정 없는 팜…</a><span class="late_date">03-28</span></li>
-          <li><span class="late_arrow"><img src="./img/main_latest_icon.gif"></span><a href="#">팜스토리의 건강한…</a><span class="late_date">03-28</span></li>
+          <c:forEach var="vo"  items="${latest3}">
+	          <li>
+		          	<span class="late_arrow">
+		          		<img src="./img/main_latest_icon.gif" >
+		          		<a class="la_title"  href="#">${vo.title }</a>
+		          		<span class="late_date">${vo.rdate }</span>
+		          	</span>
+	          	</li>
+          </c:forEach>
         </ul>
       </div>
     </div>
